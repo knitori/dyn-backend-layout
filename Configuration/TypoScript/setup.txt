@@ -1,0 +1,37 @@
+
+# Fluid Template
+lib.fluidTemplate = FLUIDTEMPLATE
+lib.fluidTemplate {
+    partialRootPath = EXT:lfmtheme/Resources/Private/Partials/
+    layoutRootPath = EXT:lfmtheme/Resources/Private/Layouts/
+
+    extbase.controllerExtensionName = Lfmtheme
+}
+
+# Fluid Layout
+lib.fluidLayout = CASE
+lib.fluidLayout {
+    key.data = pagelayout
+    default = TEXT
+    default.value = Please choose a backend layout
+
+    select__selectTemplate < lib.fluidTemplate
+    select__selectTemplate.file = EXT:lfmtheme/Resources/Private/Templates/Select.html
+    select__selectTemplate {
+        dataProcessing {
+            20 = LFM\Lfmtheme\DataProcessing\BackendLayoutProcessor
+            20 {
+                layoutField = lfm_row_selection
+            }
+        }
+    }
+}
+
+page >
+page = PAGE
+page {
+    config.no_cache = 1
+    config.contentObjectExceptionHandler = 0
+
+    10 < lib.fluidLayout
+}
