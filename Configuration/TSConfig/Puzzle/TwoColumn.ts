@@ -6,7 +6,7 @@ layout {
                 1 {
                     name = Sidebar
                 }
-                1 {
+                2 {
                     name = Content
                     colspan = 3
                 }
