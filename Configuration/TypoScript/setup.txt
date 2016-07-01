@@ -33,5 +33,47 @@ page {
     config.no_cache = 1
     config.contentObjectExceptionHandler = 0
 
+    cssInline {
+        10 = TEXT
+        10.value (
+        * {
+            box-sizing: border-box;
+        }
+        .row {
+            *zoom: 1;
+        }
+        .row:before,
+        .row:after {
+            display: table;
+            content: "";
+            line-height: 0;
+        }
+        .row:after {
+            clear:both;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .row {
+            margin: 0 -15px;
+        }
+        .col, .col-half {
+            padding: 0 15px;
+            min-height: 1px;
+        }
+        .col {
+            width: 100%;
+            border: 1px solid red;
+        }
+        .col-half {
+            width: 50%;
+            float: left;
+            border: 1px solid blue;
+        }
+        )
+    }
+
     10 < lib.fluidLayout
 }

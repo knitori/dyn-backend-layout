@@ -4,7 +4,7 @@ defined('TYPO3_MODE') or die();
 $columns = [
     'lfm_row_selection' => [
         'exclude' => 1,
-        'label' => 'Anzuzeigene Reihen auswÃ¤hlen',
+        'label' => 'Select Layouts',
         'config' => [
             'type' => 'select',
             'renderType' => 'selectMultipleSideBySide',

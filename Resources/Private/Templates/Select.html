@@ -1,10 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<div class="main">
+<div class="container">
     <f:for each="{backendLayouts.files}" as="layoutFile">
-        <div class="layout">
-            <f:render partial="Select/{layoutFile.pathinfo.filename}" arguments="{all: _all, columns: layoutFile.colPos}" />
-        </div>
+        <f:render partial="Select/{layoutFile.pathinfo.filename}" arguments="{all: _all, columns: layoutFile.colPos}" />
     </f:for>
 </div>
