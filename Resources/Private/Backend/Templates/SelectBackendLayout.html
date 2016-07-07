@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<div class="form-wizards-wrap">
+
+    <div class="">
+        <select size="10" style="width:100%;">
+            <option></option>
+        </select>
+    </div>
+    <div class="">
+        <select size="10" style="width:100%;">
+            <f:for each="{availableLayouts}" as="layout">
+                <option value="{layout.file}">{layout.title}</option>
+            </f:for>
+        </select>
+    </div>
+</div>

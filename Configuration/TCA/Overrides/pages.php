@@ -7,11 +7,8 @@ $columns = [
         'label' => 'Select Layouts',
         'config' => [
             'type' => 'select',
-            'renderType' => 'selectMultipleSideBySide',
-            'itemsProcFunc' => 'LFM\Lfmtheme\UserFunc\ItemsProcFunc->getLayoutRows',
-            'minitems' => 0,
-            'maxitems' => 999,
-            'multiple' => 1,
+            'renderType' => 'selectBackendLayout',
+            'layoutsPath' => 'EXT:lfmtheme/Configuration/TSConfig/Puzzle',
         ],
         'displayCond' => 'FIELD:backend_layout:=:select__selectTemplate',
     ],

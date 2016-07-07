@@ -8,7 +8,9 @@
 
 namespace LFM\Lfmtheme\Hooks;
 
-use LFM\Lfmtheme\Utility\HelperUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
@@ -24,12 +26,14 @@ class PageSaveHook
 
     function processDatamap_postProcessFieldArray($status, $table, $pageId, &$fieldArray, &$pObj) {
         if ($table == 'pages' && $status == 'update') {
+            DebuggerUtility::var_dump($fieldArray);
             if (!isset($fieldArray['lfm_row_selection'])) {
                 return;
             }
             $layoutFiles = GeneralUtility::trimExplode(',', $fieldArray['lfm_row_selection'], true);
+            DebuggerUtility::var_dump($layoutFiles);
 
-            /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $db */
+            /** @var DatabaseConnection $db */
             $db = $GLOBALS['TYPO3_DB'];
             $layoutTable = 'tx_lfmtheme_domain_model_backendlayout';
 
@@ -77,8 +81,8 @@ class PageSaveHook
                     }
                     $usedRelColPos[] = $freeRelColPos;
 
-                    /** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $parser */
-                    $parser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+                    /** @var TypoScriptParser $parser */
+                    $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
                     $parser->parse(file_get_contents($path));
                     $setup = $parser->setup;
 
@@ -94,8 +98,8 @@ class PageSaveHook
                 }
             }
 
-            /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            /** @var $tce DataHandler */
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->bypassAccessCheckForRecords = true;
             $tce->start($data, []);
             $tce->admin = true;
@@ -116,8 +120,8 @@ class PageSaveHook
                 $cmd[$layoutTable][$uid]['delete'] = 1;
             }
 
-            /** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
-            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+            /** @var $tce DataHandler */
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->bypassAccessCheckForRecords = true;
             $tce->start([], $cmd);
             $tce->admin = true;
