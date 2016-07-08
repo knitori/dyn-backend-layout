@@ -2,17 +2,38 @@
       data-namespace-typo3-fluid="true">
 
 <div class="form-wizards-wrap">
+    <input type="hidden" data-formengine-input-name="data[{tableName}][1][{fieldName}]" value="0">
+    <div class="form-multigroup-wrap t3js-formengine-field-group">
+        <div class="form-multigroup-item form-multigroup-element">
+            <label>Ausgewählte Objekte</label>
+            <div class="form-wizards-wrap form-wizards-aside">
+                <div class="form-wizards-element">
+                    <select class="form-control form-control-adapt" size="10">
+                        <option>Abc</option>
+                    </select>
+                </div>
+                <div class="form-wizards-items">
+                    <div class="btn-group-vertical">
+                        <a href="#" class="btn btn-default t3js-btn-moveoption-top" data-fieldname="data[pages][1][fe_group]" title="Ausgewählte Objekte zum Anfang verschieben">
+                            <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-move-to-top" data-identifier="actions-move-to-top">
+                                <span class="icon-markup">
+                                    <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/actions/actions-move-to-top.svg" width="16" height="16">
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="">
-        <select size="10" style="width:100%;">
-            <option></option>
-        </select>
+        <div class="form-multigroup-item form-multigroup-element">
+            <label>Verfügbare Objekte</label>
+            <select class="form-control form-control-adapt" size="10">
+                <f:for each="{availableLayouts}" as="layout">
+                    <option value="{layout.file}">{layout.title}</option>
+                </f:for>
+            </select>
+        </div>
     </div>
-    <div class="">
-        <select size="10" style="width:100%;">
-            <f:for each="{availableLayouts}" as="layout">
-                <option value="{layout.file}">{layout.title}</option>
-            </f:for>
-        </select>
-    </div>
+    <input type="hidden" name="data[{tableName}][1][{fieldName}]" value="">
 </div>

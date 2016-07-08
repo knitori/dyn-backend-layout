@@ -42,7 +42,11 @@ class SelectBackendLayoutElement extends AbstractFormElement
         $view->setPartialRootPaths([$base.'Partials']);
         $view->setTemplate('SelectBackendLayout');
 
-        $view->assign('availableLayouts', $layouts);
+        $view->assignMultiple([
+            'tableName' => $this->data['tableName'],
+            'fieldName' => $this->data['fieldName'],
+            'availableLayouts' => $layouts,
+        ]);
 
         $html = $view->render();
 
