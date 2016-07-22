@@ -5,7 +5,9 @@ use TYPO3\CMS\Backend\Form\Element\AbstractFormElement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -18,7 +20,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * This is rendered for config type=select, maxitems > 1, renderType=selectMultipleSideBySide set
  */
-class SelectBackendLayoutElement extends AbstractFormElement
+class FlexLayoutElement extends AbstractFormElement
 {
     /**
      * Render side by side element.
@@ -26,14 +28,6 @@ class SelectBackendLayoutElement extends AbstractFormElement
      */
     public function render()
     {
-        $layouts = [];
-
-        $config = $this->data['parameterArray']['fieldConf']['config'];
-        if (isset($config['layoutsPath'])) {
-            $path = GeneralUtility::getFileAbsFileName($config['layoutsPath']);
-            $layouts = $this->getLayouts($path);
-        }
-
         /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $base = 'EXT:lfmtheme/Resources/Private/Backend/';
@@ -45,49 +39,19 @@ class SelectBackendLayoutElement extends AbstractFormElement
         $view->assignMultiple([
             'tableName' => $this->data['tableName'],
             'fieldName' => $this->data['fieldName'],
-            'availableLayouts' => $layouts,
         ]);
 
         $html = $view->render();
 
+        /** @var PageRenderer $pageRenderer */
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $cssFile = ExtensionManagementUtility::extRelPath('lfmtheme') . 'Resources/Public/Css/flexlayout.css';
+        $pageRenderer->addCssFile($cssFile);
+
         $resultArray = $this->initializeResultArray();
-        $resultArray['requireJsModules'] = ['TYPO3/CMS/Lfmtheme/Module'];
+        $resultArray['requireJsModules'] = ['TYPO3/CMS/Lfmtheme/EditFlexLayout'];
         $resultArray['html'] = $html;
         return $resultArray;
-    }
-
-
-    protected function getLayouts($path) {
-        if (!file_exists($path) || !is_dir($path)) {
-            return [];
-        }
-        $files = scandir($path);
-        if (!is_array($files)) {
-            return [];
-        }
-        $layouts = [];
-        foreach ($files as $file) {
-            $fullPath = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
-            $tmp = strtolower($file);
-            if (substr($tmp, -3) != '.ts' && substr($tmp, -4) != '.txt') {
-                continue;
-            }
-
-            /** @var TypoScriptParser $parser */
-            $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
-            $parser->parse(file_get_contents($fullPath));
-            $setup = $parser->setup;
-
-            $layout = [
-                'title' => isset($setup['layout.']['title']) ? $setup['layout.']['title'] : $file,
-                'file' => $file,
-                'path' => $fullPath,
-            ];
-
-            $layouts[] = $layout;
-
-        }
-        return $layouts;
     }
 
 }
